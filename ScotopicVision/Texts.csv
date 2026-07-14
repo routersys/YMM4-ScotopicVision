@@ -1,0 +1,19 @@
+Key,Parameter,ja-jp,en-us,zh-cn,zh-tw,ko-kr,es-es,ar-sa,id-id
+ScotopicVisionEffectName,,暗所視,Scotopic Vision,暗视觉,暗視覺,암소시,Visión escotópica,الرؤية الليلية,Penglihatan Skotopik
+ScotopicVisionDarkness,,暗さ,Darkness,暗度,暗度,어둡기,Oscuridad,الظلام,Kegelapan
+ScotopicVisionDarknessDescription,,夜の見え方へ寄せる全体の強さです。,Overall strength of the night appearance.,整体夜视外观的强度。,整體夜視外觀的強度。,밤의 표현으로 향하는 전체 강도입니다.,Intensidad general de la apariencia nocturna.,القوة الكلية لمظهر الليل.,Kekuatan keseluruhan tampilan malam.
+ScotopicVisionThreshold,,中間視しきい値,Mesopic Threshold,中间视阈值,中間視閾值,중간시 임계값,Umbral mesópico,عتبة الرؤية المتوسطة,Ambang Mesopik
+ScotopicVisionThresholdDescription,,明部が昼の見えのまま残る明るさの境界です。,Brightness above which highlights stay photopic.,高光保持明视觉的亮度界限。,高光保持明視覺的亮度界限。,밝은 부분이 주간시로 남는 밝기 경계입니다.,Brillo por encima del cual las luces siguen fotópicas.,السطوع الذي تبقى فوقه المناطق الساطعة نهارية.,Kecerahan di mana sorotan tetap fotopik.
+ScotopicVisionAcuity,,視力低下,Acuity Loss,视力下降,視力下降,시력 저하,Pérdida de agudeza,فقدان حدة الإبصار,Penurunan Ketajaman
+ScotopicVisionAcuityDescription,,夜に見えなくなる細部の大きさです。,Size of detail that becomes invisible at night.,夜间不可见细节的尺度。,夜間不可見細節的尺度。,밤에 보이지 않게 되는 세부의 크기입니다.,Tamaño del detalle que se vuelve invisible de noche.,حجم التفاصيل التي تختفي ليلاً.,Ukuran detail yang menghilang di malam hari.
+ScotopicVisionEdgeCrispness,,エッジの鋭さ,Edge Crispness,边缘锐度,邊緣銳度,경계 선명도,Nitidez de bordes,حدة الحواف,Ketajaman Tepi
+ScotopicVisionEdgeCrispnessDescription,,細部を落としつつ輪郭を保つ強さです。,Keeps edges sharp while removing fine detail.,去除细节的同时保持轮廓清晰。,去除細節的同時保持輪廓清晰。,세부를 없애면서 윤곽을 유지하는 강도입니다.,Mantiene bordes nítidos al quitar el detalle fino.,يبقي الحواف حادة مع إزالة التفاصيل الدقيقة.,Menjaga tepi tajam sambil menghapus detail halus.
+ScotopicVisionPurkinje,,色シフト,Purkinje Shift,色移,色移,색 이동,Cambio de Purkinje,إزاحة بركنجي,Pergeseran Purkinje
+ScotopicVisionPurkinjeDescription,,暗所で青へ寄る色ずれの強さです。,Strength of the color shift toward blue in the dark.,暗处偏蓝色移的强度。,暗處偏藍色移的強度。,어두운 곳에서 파랑으로 치우치는 색 이동 강도입니다.,Intensidad del cambio de color hacia el azul en oscuridad.,قوة انزياح اللون نحو الأزرق في الظلام.,Kekuatan pergeseran warna ke biru dalam gelap.
+ScotopicVisionNoise,,ノイズ,Noise,噪点,雜訊,노이즈,Ruido,التشويش,Derau
+ScotopicVisionNoiseDescription,,暗部に乗る桿体ノイズの量です。,Amount of rod noise in dark areas.,暗部中视杆噪点的量。,暗部中視桿雜訊的量。,어두운 영역에 나타나는 간체 노이즈 양입니다.,Cantidad de ruido de bastones en zonas oscuras.,مقدار تشويش العصي في المناطق الداكنة.,Jumlah derau batang pada area gelap.
+ScotopicVisionSeed,,シード,Seed,种子,種子,시드,Semilla,البذرة,Seed
+ScotopicVisionSeedDescription,,ノイズの分布を固定する値です。,Fixed value for the noise distribution.,固定噪点分布的数值。,固定雜訊分佈的數值。,노이즈 분포를 고정하는 값입니다.,Valor fijo para la distribución del ruido.,قيمة ثابتة لتوزيع التشويش.,Nilai tetap untuk distribusi derau.
+TagScotopic,,暗所視,scotopic,暗视觉,暗視覺,암소시,escotópico,رؤية ليلية,skotopik
+TagNightVision,,暗視,night vision,夜视,夜視,야간 시야,visión nocturna,رؤية ليلية,penglihatan malam
+TagPurkinje,,プルキンエ,purkinje,浦肯野,浦肯頁,푸르키녜,purkinje,بركنجي,purkinje
