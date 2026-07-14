@@ -3,116 +3,117 @@ using Vortice.Direct2D1.Effects;
 using YukkuriMovieMaker.Commons;
 using YukkuriMovieMaker.Player.Video;
 using YukkuriMovieMaker.Player.Video.Effects;
-using static ScotopicVision.ParameterNormalizer;
 
 namespace ScotopicVision
 {
     internal sealed class ScotopicVisionEffectProcessor(IGraphicsDevicesAndContext devices, ScotopicVisionEffect item) : VideoEffectProcessorBase(devices)
     {
-        readonly ScotopicVisionEffect item = item;
-        GaussianBlur? blurNear;
-        GaussianBlur? blurFar;
-        ScotopicVisionCustomEffect? effect;
-        Parameters parameters;
-        bool isFirst = true;
+        private readonly ScotopicVisionEffect _item = item;
+        private GaussianBlur? _blurNear;
+        private GaussianBlur? _blurFar;
+        private ScotopicVisionCustomEffect? _effect;
+
+        private bool _isFirst = true;
+        private Parameters _parameters;
 
         public override DrawDescription Update(EffectDescription effectDescription)
         {
-            if (IsPassThroughEffect || effect is null || blurNear is null || blurFar is null)
+            if (IsPassThroughEffect || _effect is null || _blurNear is null || _blurFar is null)
                 return effectDescription.DrawDescription;
 
             var frame = effectDescription.ItemPosition.Frame;
             var length = effectDescription.ItemDuration.Frame;
             var fps = effectDescription.FPS;
-            var next = new Parameters(
-                Finite(item.Acuity.GetValue(frame, length, fps), 0f, 64f, 2.5f),
-                Finite(item.EdgeCrispness.GetValue(frame, length, fps), 1f, 3f, 1.25f),
-                Percent(item.Purkinje.GetValue(frame, length, fps), 0f, 2f, 1f),
-                Percent(item.Darkness.GetValue(frame, length, fps), 0f, 1f, 0.7f),
-                Percent(item.Threshold.GetValue(frame, length, fps), 0f, 1f, 0.7f),
-                Percent(item.Noise.GetValue(frame, length, fps), 0f, 1f, 0.3f) * 0.05f,
-                Math.Clamp(item.Seed, 0, 9999));
 
-            if (isFirst || parameters.Sigma != next.Sigma)
+            var parameters = new Parameters(
+                (float)_item.Acuity.GetValue(frame, length, fps),
+                (float)_item.EdgeCrispness.GetValue(frame, length, fps),
+                (float)(_item.Purkinje.GetValue(frame, length, fps) / 100.0),
+                (float)(_item.Darkness.GetValue(frame, length, fps) / 100.0),
+                (float)(_item.Threshold.GetValue(frame, length, fps) / 100.0),
+                (float)(_item.Noise.GetValue(frame, length, fps) / 100.0 * 0.05),
+                _item.Seed);
+
+            if (_isFirst || _parameters.Sigma != parameters.Sigma)
             {
-                blurNear.StandardDeviation = next.Sigma;
-                blurFar.StandardDeviation = next.Sigma * 1.6f;
+                _blurNear.StandardDeviation = parameters.Sigma;
+                _blurFar.StandardDeviation = parameters.Sigma * 1.6f;
             }
-            if (isFirst || parameters.EdgeGamma != next.EdgeGamma)
-                effect.EdgeGamma = next.EdgeGamma;
-            if (isFirst || parameters.Purkinje != next.Purkinje)
-                effect.Purkinje = next.Purkinje;
-            if (isFirst || parameters.Darkness != next.Darkness)
-                effect.Darkness = next.Darkness;
-            if (isFirst || parameters.Threshold != next.Threshold)
-                effect.Threshold = next.Threshold;
-            if (isFirst || parameters.NoiseLevel != next.NoiseLevel)
-                effect.NoiseLevel = next.NoiseLevel;
-            if (isFirst || parameters.Seed != next.Seed)
-                effect.Seed = next.Seed;
+            if (_isFirst || _parameters.EdgeGamma != parameters.EdgeGamma)
+                _effect.EdgeGamma = parameters.EdgeGamma;
+            if (_isFirst || _parameters.Purkinje != parameters.Purkinje)
+                _effect.Purkinje = parameters.Purkinje;
+            if (_isFirst || _parameters.Darkness != parameters.Darkness)
+                _effect.Darkness = parameters.Darkness;
+            if (_isFirst || _parameters.Threshold != parameters.Threshold)
+                _effect.Threshold = parameters.Threshold;
+            if (_isFirst || _parameters.NoiseLevel != parameters.NoiseLevel)
+                _effect.NoiseLevel = parameters.NoiseLevel;
+            if (_isFirst || _parameters.Seed != parameters.Seed)
+                _effect.Seed = parameters.Seed;
 
-            parameters = next;
-            isFirst = false;
+            _parameters = parameters;
+            _isFirst = false;
 
             return effectDescription.DrawDescription;
         }
 
         protected override ID2D1Image? CreateEffect(IGraphicsDevicesAndContext devices)
         {
-            blurNear = new GaussianBlur(devices.DeviceContext)
+            _blurNear = new GaussianBlur(devices.DeviceContext)
             {
                 Optimization = GaussianBlurOptimization.Quality,
                 BorderMode = BorderMode.Hard,
             };
-            blurFar = new GaussianBlur(devices.DeviceContext)
+            _blurFar = new GaussianBlur(devices.DeviceContext)
             {
                 Optimization = GaussianBlurOptimization.Quality,
                 BorderMode = BorderMode.Hard,
             };
-            effect = new ScotopicVisionCustomEffect(devices);
-            if (!effect.IsEnabled)
+            _effect = new ScotopicVisionCustomEffect(devices);
+            if (!_effect.IsEnabled)
             {
-                blurNear.Dispose();
-                blurFar.Dispose();
-                effect.Dispose();
-                blurNear = null;
-                blurFar = null;
-                effect = null;
+                _blurNear.Dispose();
+                _blurFar.Dispose();
+                _effect.Dispose();
+                _blurNear = null;
+                _blurFar = null;
+                _effect = null;
                 return null;
             }
 
-            disposer.Collect(blurNear);
-            disposer.Collect(blurFar);
-            disposer.Collect(effect);
+            disposer.Collect(_blurNear);
+            disposer.Collect(_blurFar);
+            disposer.Collect(_effect);
 
-            using (var output = blurNear.Output)
-                effect.SetInput(1, output, true);
-            using (var output = blurFar.Output)
-                effect.SetInput(2, output, true);
+            using (var output = _blurNear.Output)
+                _effect.SetInput(1, output, true);
+            using (var output = _blurFar.Output)
+                _effect.SetInput(2, output, true);
 
-            var result = effect.Output;
+            var result = _effect.Output;
             disposer.Collect(result);
             return result;
         }
 
         protected override void setInput(ID2D1Image? input)
         {
-            blurNear?.SetInput(0, input, true);
-            blurFar?.SetInput(0, input, true);
-            effect?.SetInput(0, input, true);
+            _blurNear?.SetInput(0, input, true);
+            _blurFar?.SetInput(0, input, true);
+            _effect?.SetInput(0, input, true);
         }
 
         protected override void ClearEffectChain()
         {
-            blurNear?.SetInput(0, null, true);
-            blurFar?.SetInput(0, null, true);
-            effect?.SetInput(0, null, true);
-            effect?.SetInput(1, null, true);
-            effect?.SetInput(2, null, true);
-            isFirst = true;
+            _blurNear?.SetInput(0, null, true);
+            _blurFar?.SetInput(0, null, true);
+            _effect?.SetInput(0, null, true);
+            _effect?.SetInput(1, null, true);
+            _effect?.SetInput(2, null, true);
+            _isFirst = true;
         }
 
-        readonly record struct Parameters(
+        private readonly record struct Parameters(
             float Sigma,
             float EdgeGamma,
             float Purkinje,

@@ -44,9 +44,9 @@ namespace ScotopicVision
         [DefaultValue(0)]
         [TextBoxSlider("F0", "", 0, 9999)]
         public int Seed { get => _seed; set => Set(ref _seed, Math.Clamp(value, 0, 9999)); }
-        int _seed;
+        private int _seed;
 
-        IAnimatable[]? _animatables;
+        private IAnimatable[]? _animatables;
 
         public override IEnumerable<string> CreateExoVideoFilters(int keyFrameIndex, ExoOutputDescription exoOutputDescription) => [];
 
