@@ -11,6 +11,8 @@ YukkuriMovieMaker4（YMM4）上で動作する、映像を人の暗所視に近�
 明るい部分は昼の見えのまま残ります。
 数値パラメータはアニメーションに対応しています。
 
+![Image](https://github.com/routersys/YMM4-ScotopicVision/blob/main/docs/ScotopicVision.png)
+
 ---
 
 ## 目次
