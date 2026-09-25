@@ -1,9 +1,8 @@
 using YukkuriMovieMaker.Generator;
 
-namespace ScotopicVision
+namespace ScotopicVision;
+
+[AutoGenLocalizer]
+partial class Texts
 {
-    [AutoGenLocalizer]
-    partial class Texts
-    {
-    }
 }
